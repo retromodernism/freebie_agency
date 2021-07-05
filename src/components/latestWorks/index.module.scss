@@ -1,0 +1,170 @@
+@import "./../../variables.scss";
+
+.latestWorks {
+  width: 1800px;
+  padding: 165px 307.5px;
+}
+
+.latestWorks__header {
+  position: absolute;
+}
+
+.latestWorks__title {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 48px;
+  line-height: 71px;
+  display: flex;
+  align-items: flex-end;
+  letter-spacing: 3.072px;
+
+  color: #252525;
+
+  position: relative;
+  margin-bottom: 50px;
+  &::after {
+    content: "";
+    width: 45px;
+    height: 2px;
+    background: #252525;
+    position: absolute;
+    left: 0;
+    bottom: -15px;
+  }
+}
+
+.latestWorks__nav {
+  display: flex;
+}
+
+.latestWorks__category {
+  opacity: 0.3;
+  color: #252525;
+  &:not(:last-child) {
+    margin-right: 41px;
+  }
+}
+
+.latestWorks__category_active {
+  opacity: 1;
+}
+
+.latestWorks__content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 12px;
+  row-gap: 177px;
+}
+
+.latestWorks__item {
+  width: 100%;
+  position: relative;
+}
+
+.latestWorks__item_even {
+  grid-column: 2;
+  .latestWorks__item-title {
+    left: 0;
+  }
+  .latestWorks__item-image-wrapper {
+    justify-content: flex-end;
+  }
+  .latestWorks__item-description {
+    margin-left: 125px;
+    text-align: end;
+  }
+}
+
+.latestWorks__item_odd {
+  grid-column: 1;
+  .latestWorks__item-title {
+    left: 340px;
+  }
+  // .latestWorks__item-image-wrapper {
+  // }
+  .latestWorks__item-description {
+    margin-left: 175px;
+  }
+}
+
+.latestWorks__item-title {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 48px;
+  line-height: 71px;
+  letter-spacing: 3.072px;
+
+  color: #252525;
+
+  max-width: 406px;
+  position: absolute;
+  top: 50%;
+  text-transform: uppercase;
+}
+
+.latestWorks__item-image-wrapper {
+  width: 100%;
+  display: flex;
+}
+
+.latestWorks__item-image {
+  width: 455px;
+  height: 444px;
+}
+
+.latestWorks__item-description {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300;
+
+  margin-top: 24px;
+  max-width: 336px;
+}
+
+.latestWorks__item-description-title {
+  font-size: 18px;
+  line-height: 25px;
+  letter-spacing: 1.152px;
+
+  color: #252525;
+}
+
+.latestWorks__item-description-text {
+  font-size: 13px;
+  line-height: 23px;
+  letter-spacing: 0.832px;
+
+  color: #c2c2c2;
+  margin-top: 17px;
+}
+
+.latestWorks__item-description-read-more {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: 0.832px;
+
+  color: #252525;
+
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.latestWorks__view-more {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 19px;
+  text-align: right;
+  letter-spacing: 2px;
+
+  color: #252525;
+
+  cursor: pointer;
+  margin-top: 5px;
+}
