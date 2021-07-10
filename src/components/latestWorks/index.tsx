@@ -1,17 +1,31 @@
 import styles from "./index.module.scss";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { connect } from "react-redux";
 import { AppStateType } from "./../../redux/store";
-import { WorkType, getWorks, CategoryType } from "./../../redux/modules/works";
+import {
+  WorkType,
+  getWorks,
+  CategoryType,
+  toggleCategory,
+  showMore,
+} from "./../../redux/modules/works";
 import LatestWorksNavLeaf from "./latestWorksNavLeaf";
 
 type PropsType = {
   works: WorkType[];
   categories: CategoryType[];
-  getWorks: Function;
+  getWorks: () => void;
+  toggleCategory: (category: string) => void;
+  showMore: (category: string) => void;
 };
 
-const LatestWorks: React.FC<PropsType> = ({ works, categories, getWorks }) => {
+const LatestWorks: React.FC<PropsType> = ({
+  works,
+  categories,
+  getWorks,
+  toggleCategory,
+  showMore,
+}) => {
   useEffect(() => {
     getWorks();
   }, []);
@@ -30,7 +44,7 @@ const LatestWorks: React.FC<PropsType> = ({ works, categories, getWorks }) => {
               }
               title={category}
               key={index}
-              // customOnClick={setActiveWorkCategory.bind(null, title)}
+              customOnClick={toggleCategory.bind(null, category)}
             />
           ))}
         </ul>
@@ -39,65 +53,80 @@ const LatestWorks: React.FC<PropsType> = ({ works, categories, getWorks }) => {
         {categories
           .filter(({ isPicked }) => isPicked)[0]
           ?.works.map((work, index) => {
-            const { isActive, image, title, description, readMore } = work;
+            const { isActive, image, title, description, isShowed, showMore } =
+              work;
             const classes =
               index % 2
                 ? `${styles["latestWorks__item"]} ${styles["latestWorks__item_odd"]}`
                 : `${styles["latestWorks__item"]} ${styles["latestWorks__item_even"]}`;
             return (
-              <div
-                className={classes}
-                key={index}
-                style={{
-                  gridRow: `${index + 1}/${index + 3}`,
-                }}
-              >
+              isShowed && (
                 <div
-                  className={styles["latestWorks__item-title"]}
-                  dangerouslySetInnerHTML={{ __html: title }}
+                  className={classes}
+                  key={index}
                   style={{
-                    textDecoration: isActive
-                      ? `none`
-                      : `line-through 3px #70BF73`,
+                    gridRow: `${index + 1}/${index + 3}`,
                   }}
-                ></div>
-                <div className={styles["latestWorks__item-image-wrapper"]}>
+                >
                   <div
-                    className={styles["latestWorks__item-image"]}
+                    className={styles["latestWorks__item-title"]}
+                    dangerouslySetInnerHTML={{ __html: title }}
                     style={{
-                      background: `url(${image}) 100% 100% no-repeat`,
+                      textDecoration: isActive
+                        ? `none`
+                        : `line-through 3px #70BF73`,
                     }}
                   ></div>
-                </div>
-                <div className={styles["latestWorks__item-description"]}>
-                  <div
-                    className={styles["latestWorks__item-description-title"]}
-                  >
-                    {description.title}
-                  </div>
-                  <div className={styles["latestWorks__item-description-text"]}>
-                    {description.text}
-                  </div>
-                  {readMore && (
+                  <div className={styles["latestWorks__item-image-wrapper"]}>
                     <div
-                      className={
-                        styles["latestWorks__item-description-read-more"]
-                      }
+                      className={styles["latestWorks__item-image"]}
                       style={{
-                        textDecoration: isActive
-                          ? `none`
-                          : `line-through 3px #70BF73`,
+                        background: `url(${image}) 100% 100% no-repeat`,
                       }}
+                    ></div>
+                  </div>
+                  <div className={styles["latestWorks__item-description"]}>
+                    <div
+                      className={styles["latestWorks__item-description-title"]}
                     >
-                      Read More
+                      {description.title}
                     </div>
-                  )}
+                    <div
+                      className={styles["latestWorks__item-description-text"]}
+                    >
+                      {description.text}
+                    </div>
+                    {showMore && (
+                      <div
+                        className={
+                          styles["latestWorks__item-description-read-more"]
+                        }
+                        style={{
+                          textDecoration: isActive
+                            ? `none`
+                            : `line-through 3px #70BF73`,
+                        }}
+                      >
+                        Read More
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )
             );
           })}
       </div>
-      <div className={styles["latestWorks__view-more"]}>View More</div>
+      {categories.filter(({ isPicked }) => isPicked)[0]?.hasShowMore && (
+        <div
+          className={styles["latestWorks__view-more"]}
+          onClick={showMore.bind(
+            null,
+            categories.filter(({ isPicked }) => isPicked)[0].category
+          )}
+        >
+          View More
+        </div>
+      )}
     </div>
   );
 };
@@ -109,5 +138,7 @@ export default connect(
   }),
   {
     getWorks,
+    toggleCategory,
+    showMore,
   }
 )(LatestWorks);

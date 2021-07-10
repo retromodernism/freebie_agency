@@ -1,4 +1,4 @@
-import { InferActionsTypes, BaseThunkType } from "./../store";
+import { InferActionsTypes, BaseThunkType, AppStateType } from "./../store";
 import { Dispatch } from "redux";
 import photography from "./../../components/latestWorks/src/photography.png";
 import kittens from "./../../components/latestWorks/src/kittens.png";
@@ -9,6 +9,9 @@ const moduleName = "works";
 
 const REFRESH_WORKS = `${moduleName}/REFRESH_WORKS`;
 const SET_WORK_CATEGORIES = `${moduleName}/SET_WORK_CATEGORIES`;
+
+const worksDisplayed = 4;
+const numberOfAddedWorks = 3;
 
 const initialState = {
   works: [] as WorkType[],
@@ -63,7 +66,8 @@ export const getWorks = (): ThunkType => async (dispatch: Dispatch) => {
         title: "Photography",
         text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       },
-      readMore: false,
+      showMore: false,
+      isShowed: false,
     },
     {
       category: "Branding",
@@ -74,7 +78,8 @@ export const getWorks = (): ThunkType => async (dispatch: Dispatch) => {
         title: "Photography",
         text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       },
-      readMore: true,
+      showMore: true,
+      isShowed: false,
     },
     {
       category: "Web Design",
@@ -85,7 +90,8 @@ export const getWorks = (): ThunkType => async (dispatch: Dispatch) => {
         title: "Photography",
         text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       },
-      readMore: false,
+      showMore: false,
+      isShowed: false,
     },
     {
       category: "Illustration",
@@ -96,7 +102,8 @@ export const getWorks = (): ThunkType => async (dispatch: Dispatch) => {
         title: "Photography",
         text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       },
-      readMore: false,
+      showMore: false,
+      isShowed: false,
     },
     {
       category: "Web Design",
@@ -107,7 +114,128 @@ export const getWorks = (): ThunkType => async (dispatch: Dispatch) => {
         title: "Photography",
         text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       },
-      readMore: false,
+      showMore: false,
+      isShowed: false,
+    },
+    {
+      category: "Photography",
+      isActive: true,
+      image: photography,
+      title: "100 Years Photography",
+      description: {
+        title: "Photography",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      },
+      showMore: false,
+      isShowed: false,
+    },
+    {
+      category: "Branding",
+      isActive: false,
+      image: kittens,
+      title: "A Kittens’s<br>Life",
+      description: {
+        title: "Photography",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      },
+      showMore: true,
+      isShowed: false,
+    },
+    {
+      category: "Web Design",
+      isActive: true,
+      image: mac,
+      title: "Groovemade Products For Mac",
+      description: {
+        title: "Photography",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      },
+      showMore: false,
+      isShowed: false,
+    },
+    {
+      category: "Illustration",
+      isActive: true,
+      image: apples,
+      title: "Apple's Lost Magic",
+      description: {
+        title: "Photography",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      },
+      showMore: false,
+      isShowed: false,
+    },
+    {
+      category: "Web Design",
+      isActive: true,
+      image: photography,
+      title: "100 Years Photography",
+      description: {
+        title: "Photography",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      },
+      showMore: false,
+      isShowed: false,
+    },
+    {
+      category: "Photography",
+      isActive: true,
+      image: photography,
+      title: "100 Years Photography",
+      description: {
+        title: "Photography",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      },
+      showMore: false,
+      isShowed: false,
+    },
+    {
+      category: "Branding",
+      isActive: false,
+      image: kittens,
+      title: "A Kittens’s<br>Life",
+      description: {
+        title: "Photography",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      },
+      showMore: true,
+      isShowed: false,
+    },
+    {
+      category: "Web Design",
+      isActive: true,
+      image: mac,
+      title: "Groovemade Products For Mac",
+      description: {
+        title: "Photography",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      },
+      showMore: false,
+      isShowed: false,
+    },
+    {
+      category: "Illustration",
+      isActive: true,
+      image: apples,
+      title: "Apple's Lost Magic",
+      description: {
+        title: "Photography",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      },
+      showMore: false,
+      isShowed: false,
+    },
+    {
+      category: "Web Design",
+      isActive: true,
+      image: photography,
+      title: "100 Years Photography",
+      description: {
+        title: "Photography",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      },
+      showMore: false,
+      isShowed: false,
     },
   ];
 
@@ -117,9 +245,10 @@ export const getWorks = (): ThunkType => async (dispatch: Dispatch) => {
   ];
 
   // Массив объектов для вывода в View
-  const categories: CategoryType[] = uniqCategories.map((category) => ({
+  let categories: CategoryType[] = uniqCategories.map((category) => ({
     category,
     isPicked: false,
+    hasShowMore: false,
     works: works.filter((work) => category === work.category),
   }));
 
@@ -128,15 +257,82 @@ export const getWorks = (): ThunkType => async (dispatch: Dispatch) => {
     category: "all",
     isPicked: true,
     works: works,
+    hasShowMore: false,
+  });
+
+  categories = categories.map((category) => {
+    const hasShowMore = category.works.length > worksDisplayed;
+    const works = category.works.map((work, i) =>
+      i < worksDisplayed
+        ? {
+            ...work,
+            isShowed: true,
+          }
+        : work
+    );
+    return {
+      ...category,
+      works,
+      hasShowMore,
+    };
   });
 
   dispatch(actions.getWorks(works));
   dispatch(actions.setCategories(categories));
 };
 
+export const toggleCategory =
+  (category: string): ThunkType =>
+  async (dispatch: Dispatch, getState: () => AppStateType) => {
+    const categories = getState().works.categories;
+    dispatch(
+      actions.setCategories(
+        categories.map((curCategory) => ({
+          ...curCategory,
+          isPicked: curCategory.category === category,
+        }))
+      )
+    );
+  };
+
+export const showMore =
+  (category: string): ThunkType =>
+  async (dispatch: Dispatch, getState: () => AppStateType) => {
+    const categories = getState().works.categories;
+    const countOfAllWorks = categories.filter(({ isPicked }) => isPicked)[0]
+      .works.length;
+    const numberOfDisplayedCategories = categories
+      .filter(({ isPicked }) => isPicked)[0]
+      .works.filter(({ isShowed }) => isShowed).length;
+
+    const showMore =
+      countOfAllWorks > numberOfDisplayedCategories + numberOfAddedWorks;
+
+    const newCategories = categories.map((curCategory) => {
+      const { isPicked } = curCategory;
+
+      if (!isPicked) {
+        return curCategory;
+      }
+
+      return {
+        ...curCategory,
+        hasShowMore: showMore,
+        works: curCategory.works.map((work, index) =>
+          index < numberOfDisplayedCategories + numberOfAddedWorks
+            ? { ...work, isShowed: true }
+            : { ...work, isShowed: false }
+        ),
+      };
+    });
+
+    dispatch(actions.setCategories(newCategories));
+  };
+
 export type CategoryType = {
   category: string;
   isPicked: boolean;
+  hasShowMore: boolean;
   works: WorkType[];
 };
 export type WorkType = {
@@ -148,7 +344,8 @@ export type WorkType = {
     title: string;
     text: string;
   };
-  readMore: boolean;
+  showMore: boolean;
+  isShowed: boolean;
 };
 export type InitialState = typeof initialState;
 type ActionsTypes = InferActionsTypes<typeof actions>;
