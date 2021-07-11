@@ -5,6 +5,7 @@ import Hero from "./components/hero";
 import FirstSection from "./components/firstSection";
 import Services from "./components/services";
 import LatestWorks from "./components/latestWorks";
+import Team from "./components/team";
 
 import configureStore from "./redux/store";
 import { Provider } from "react-redux";
@@ -19,6 +20,7 @@ const App: React.FC = () => {
         <FirstSection />
         <Services />
         <LatestWorks />
+        <Team />
       </div>
     </Provider>
   );
