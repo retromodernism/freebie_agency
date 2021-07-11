@@ -45,11 +45,13 @@ const getCSSModuleLocalIdent = function getLocalIdent(
     localIdentName,
     options
   );
-
+  const isProduction = process.env.NODE_ENV === "production";
   // return hash
   //   .replace(new RegExp("[^a-zA-Z0-9\\-_\u00A0-\uFFFF]", "g"), "-")
   //   .replace(/^((-?[0-9])|--)/, "_$1");
-  return `${localName}--${hash.substr(0, 5)}`;
+  return isProduction
+    ? hash.replace(/^((-?[0-9])|--)/, "_$1").substr(0, 5)
+    : `${localName}--${hash.substr(0, 5)}`;
 };
 const ESLintPlugin = require("eslint-webpack-plugin");
 const paths = require("./paths");
