@@ -1,0 +1,119 @@
+@import "./../../variables.scss";
+
+.testimonials {
+  width: 1800px;
+  padding: 117px 310px;
+}
+
+.testimonials__testimonial {
+  height: 270px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  position: relative;
+  &::after {
+    content: "";
+    width: 511px;
+    height: 1px;
+    background: #d8d8d8;
+    mix-blend-mode: normal;
+    opacity: 0.5;
+  }
+}
+
+.testimonials__text {
+  max-width: 735px;
+  text-align: center;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 31px;
+
+  letter-spacing: 0.896px;
+
+  color: #373737;
+}
+
+.testimonials__testimonialQuote {
+  height: 20px;
+  width: 20px;
+  background: url(./src/quote.png) 100% 100% no-repeat;
+}
+
+.testimonials__testimonialNameWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.testimonials__testimonialName {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 27px;
+  letter-spacing: 1.152px;
+
+  color: #373737;
+}
+
+.testimonials__testimonialSlash {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 27px;
+  letter-spacing: 1.152px;
+
+  color: #b8b8b8;
+  margin: 0 5px;
+}
+
+.testimonials__testimonialPosition {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 21px;
+  letter-spacing: 0.896px;
+
+  color: #b8b8b8;
+}
+
+.testimonials__testimonialStars {
+  display: flex;
+}
+
+.testimonials__testimonialStar {
+  height: 15px;
+  width: 15px;
+  background: url(./src/star.png);
+  &:not(:last-child) {
+    margin-right: 9px;
+  }
+}
+
+.testimonials__testimonialStar_active {
+  background: url(./src/star_active.png);
+}
+
+.testimonials__nextArrow {
+  height: 20px;
+  width: 20px;
+  background: url(./src/next.png);
+  &::before {
+    content: "";
+  }
+}
+
+.testimonials__prevArrow {
+  height: 20px;
+  width: 20px;
+  background: url(./src/prev.png);
+  &::before {
+    content: "";
+  }
+}

@@ -9,6 +9,7 @@ import Team from "./components/team";
 
 import configureStore from "./redux/store";
 import { Provider } from "react-redux";
+import Testimonials from "./components/testimonials";
 
 const store = configureStore();
 
@@ -21,6 +22,7 @@ const App: React.FC = () => {
         <Services />
         <LatestWorks />
         <Team />
+        <Testimonials />
       </div>
     </Provider>
   );
